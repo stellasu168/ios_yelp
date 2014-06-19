@@ -22,6 +22,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 @property (weak, nonatomic) IBOutlet UITableView *restaurantTableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
+@property (weak, nonatomic) NSString *searchTerm;
 
 @end
 
@@ -160,31 +161,10 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     [searchBar resignFirstResponder];
 }
 
-/*
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    UITextField *searchBarTextField;
-    
-    for (UIView *subView in searchBar.subviews){
-        for (UIView *secondLevelSubView in subView.subviews){
-            if ([secondLevelSubView isKindOfClass:[UITextField class]]) {
-                searchBarTextField = (UITextField *)secondLevelSubView;
-                break;
-            }
-        }
-    }
-    
-    [searchBar resignFirstResponder];
-    [self.client searchWithTerm:searchBarTextField.text success:^(AFHTTPRequestOperation *operation, id response) {
-        self.restaurantList = [[NSMutableArray alloc] init];
-        for (NSDictionary *restaurant in response[@"businesses"]) {
-            [self.restaurantList addObject:[[Restaurant alloc] initWithRestaurantData:restaurant]];
-        }
-        [self.restaurantTableView reloadData];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error: %@", [error description]);
-    }];
+    self.searchTerm = searchBar.text;
     
 }
 -(void)searchWithDictionary:(NSMutableDictionary *)dict
@@ -218,7 +198,6 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     }];
 }
 
- */
 
 
 @end

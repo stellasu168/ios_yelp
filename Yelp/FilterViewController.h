@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SegmentedTableViewCell.h"
+
 
 @protocol FilterViewControllerDelegate <NSObject>
 -(void)searchWithDictionary:(NSMutableDictionary *)data;

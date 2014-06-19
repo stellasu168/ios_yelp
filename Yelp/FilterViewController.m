@@ -4,6 +4,11 @@
 //
 //  Created by Stella Su on 6/17/14.
 //  Copyright (c) 2014 codepath. All rights reserved.
+//  Filters will have ..
+//  - Sort (best match, distance, highest rated)
+//  - radius (meters)
+//  - deals (on/off)
+//  - category
 //
 
 #import "FilterViewController.h"
@@ -17,7 +22,7 @@
 @property (nonatomic, assign) NSUInteger distanceBySelection;
 @property (nonatomic, assign) NSUInteger sortBySelection;
 @property (nonatomic, strong) NSMutableArray *values;
-@property (nonatomic, assign) NSUInteger priceSelection;
+
 @end
 
 @implementation FilterViewController
@@ -29,11 +34,6 @@
         // Custom initialization
         self.values = [@[@(NO),@(NO),@(YES),@(YES)] mutableCopy];
         self.categories = [NSMutableArray arrayWithObjects:
-                        @{
-                            @"name":@"Price",
-                            @"type":@"segmented",
-                            @"list":@[@"$",@"$$",@"$$$",@"$$$$"]
-                             },
                         @{
                              @"name":@"Most Popular",
                              @"type":@"switches",

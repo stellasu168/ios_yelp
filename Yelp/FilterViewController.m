@@ -12,16 +12,18 @@
 //
 
 #import "FilterViewController.h"
+#import "Filter.h"
 
 @interface FilterViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *filterTableView;
 @property (nonatomic, strong) NSMutableArray *categories;
+@property (nonatomic, strong) NSMutableArray *values;
 @property (nonatomic, assign) BOOL distanceCollapsed;
 @property (nonatomic, assign) BOOL sortByCollapsed;
 @property (nonatomic, assign) NSUInteger distanceBySelection;
 @property (nonatomic, assign) NSUInteger sortBySelection;
-@property (nonatomic, strong) NSMutableArray *values;
+
 
 @end
 
@@ -62,55 +64,38 @@
     self.filterTableView.dataSource = self;
     self.filterTableView.delegate = self;
     [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"FilterCell"];
-    UINib *nib = [UINib nibWithNibName:@"SegmentedTableViewCell" bundle:nil];
-    [self.filterTableView registerNib:nib forCellReuseIdentifier:@"SegmentedCell"];
+//    UINib *nib = [UINib nibWithNibName:@"SegmentedTableViewCell" bundle:nil];
+ //   [self.filterTableView registerNib:nib forCellReuseIdentifier:@"SegmentedCell"];
     [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SwitchCell"];
     [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ExpandableCell"];
     
-    UINavigationBar *headerView = [[UINavigationBar alloc] initWithFrame:CGRectMake(0,0,320,44)];
     
-    UINavigationItem *buttonCarrier = [[UINavigationItem alloc]initWithTitle:@"Filter"];
-    
-    UIBarButtonItem *barBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
-    UIBarButtonItem *barSaveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
-    
-    [buttonCarrier setLeftBarButtonItem:barBackButton];
-    [buttonCarrier setRightBarButtonItem:barSaveButton];
-    NSArray *barItemArray = [[NSArray alloc]initWithObjects:buttonCarrier,nil];
-    [headerView setItems:barItemArray];
-    
-    [self.filterTableView setTableHeaderView:headerView];
-    [headerView setTintColor:[UIColor whiteColor]];
-    [headerView setTitleTextAttributes: @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    [headerView setBarTintColor:[UIColor redColor]];
     self.distanceCollapsed = YES;
     self.sortByCollapsed = YES;
     self.sortBySelection = 0;
     self.distanceBySelection = 0;
-    self.priceSelection = 3;
+  
     
 }
-
+/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // alloc a Filter object
+    // set Filter.userSwitch = YES / NO;
+    // then call a function. (  self...addTarget (Selector @ .... )
+    
     if (indexPath.section == 0)
-    {
-        SegmentedTableViewCell *cell = (SegmentedTableViewCell *)[self.filterTableView dequeueReusableCellWithIdentifier:@"SegmentedCell" forIndexPath:indexPath];
-//[cell setSelectedIndex:self.priceSelection];
-        return cell;
-    }
-    else if (indexPath.section == 1)
     {
         UITableViewCell *cell;
         cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
         cell.textLabel.text = self.categories[indexPath.section][@"list"][indexPath.row];
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [switchView setOn:self.values[indexPath.row]];
+       // [switchView setOn:self.values[indexPath.row]];
         
         cell.accessoryView = switchView;
         return cell;
     }
-    else if (indexPath.section == 2)
+    else if (indexPath.section == 1)
     {
         UITableViewCell * cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandableCell" forIndexPath:indexPath];
         if(self.distanceCollapsed) {
@@ -122,7 +107,7 @@
         }
         return cell;
     }
-    else if (indexPath.section == 3)
+    else if (indexPath.section == 2)
     {
         
         UITableViewCell * cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandableCell" forIndexPath:indexPath];
@@ -139,7 +124,7 @@
         UITableViewCell *cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"FilterCell" forIndexPath:indexPath];
         return cell;
     }
-    
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -237,7 +222,7 @@
 //    }
 //}
 
-
+*/
 
 @end
 

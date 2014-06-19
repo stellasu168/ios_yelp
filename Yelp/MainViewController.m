@@ -33,31 +33,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
-        self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
-        
-        [self.client searchWithTerm:@"Thai" success:^(AFHTTPRequestOperation *operation, id response)
-        {
-           // NSLog(@"sample response: %@", response);
-            
-            // response is a NSDictionary object
-            NSArray *businesses = response[@"businesses"];
-            
-            if(self.restaurantList == nil){
-                
-                self.restaurantList = [[NSMutableArray alloc] init];
-            }
-         
-            self.restaurantList =  [Restaurant businessesWithArray:businesses];
-           
-            [self.restaurantTableView reloadData];
-           
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error)
-        {
-            NSLog(@"error: %@", [error description]);
-        }];
-  
+        [self performSearch];
         
     }
     return self;
@@ -150,52 +126,45 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 }
 
 
-// On the 'tap'
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)performSearch
 {
-    //Do nothing for now.
+    // Perform a new search
+        //self.searchTerm = @"Thai";
+    // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
+    self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
+    
+    [self.client searchWithTerm: @"Thai" success:^(AFHTTPRequestOperation *operation, id response)
+     {
+         NSLog(@"sample response: %@", response);
+         
+         // response is a NSDictionary object
+         NSArray *businesses = response[@"businesses"];
+         
+         if(self.restaurantList == nil){
+             
+             self.restaurantList = [[NSMutableArray alloc] init];
+         }
+         
+         self.restaurantList =  [Restaurant businessesWithArray:businesses];
+         [self.restaurantTableView reloadData];
+         
+         
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"error: %@", [error description]);
+     }];
+
+    
     
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-}
 
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarClicked:(UISearchBar *)searchBar
 {
     self.searchTerm = searchBar.text;
+    [searchBar resignFirstResponder];
+    [self performSearch];
     
-}
--(void)searchWithDictionary:(NSMutableDictionary *)dict
-{
-    //[dictionary setValue:self.searchTerm forKey:@"term"];
-    UITextField *searchBarTextField;
-    for (UIView *subView in self.searchBar.subviews){
-        for (UIView *secondLeveSubView in subView.subviews){
-            if ([secondLeveSubView isKindOfClass:[UITextField class]]) {
-                searchBarTextField = (UITextField *)secondLeveSubView;
-                break;
-            }
-        }
-    }
-    
-    
-    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    
-    [dictionary setObject:searchBarTextField.text forKey:@"term"];
-    [dictionary addEntriesFromDictionary:dict];
-    [dictionary setValue:@"san francisco" forKey:@"location"];
-    
-    [self.client searchWithDictionary:dictionary success:^(AFHTTPRequestOperation *operation, id response) {
-        self.restaurantList = [[NSMutableArray alloc] init];
-        for (NSDictionary *restaurant in response[@"businesses"]) {
-            [self.restaurantList addObject:[[Restaurant alloc] initWithRestaurantData:restaurant]];
-        }
-        [self.restaurantTableView reloadData];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error: %@", [error description]);
-    }];
 }
 
 

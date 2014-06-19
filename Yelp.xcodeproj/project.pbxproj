@@ -27,6 +27,7 @@
 		5548195F194E64010055EB16 /* RestaurantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5548195D194E64010055EB16 /* RestaurantCell.xib */; };
 		557F60F8195145F200648D7F /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 557F60F6195145F200648D7F /* FilterViewController.m */; };
 		557F60F9195145F200648D7F /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 557F60F7195145F200648D7F /* FilterViewController.xib */; };
+		557F61041952BAA800648D7F /* Filter.m in Sources */ = {isa = PBXBuildFile; fileRef = 557F61031952BAA800648D7F /* Filter.m */; };
 		63E591F41F684901AF8C1C19 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEC6D18C14F46F8AF2EA320 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,8 @@
 		557F60F5195145F200648D7F /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
 		557F60F6195145F200648D7F /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		557F60F7195145F200648D7F /* FilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
+		557F61021952BAA800648D7F /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		557F61031952BAA800648D7F /* Filter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Filter.m; sourceTree = "<group>"; };
 		8436EC1AAEE1439D997D29F7 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9DEC6D18C14F46F8AF2EA320 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -204,6 +207,8 @@
 			children = (
 				5548194D194C5CEE0055EB16 /* Restaurant.h */,
 				5548194E194C5CEE0055EB16 /* Restaurant.m */,
+				557F61021952BAA800648D7F /* Filter.h */,
+				557F61031952BAA800648D7F /* Filter.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42FD6C5B18DC286B000BF2B9 /* AppDelegate.m in Sources */,
+				557F61041952BAA800648D7F /* Filter.m in Sources */,
 				5548195E194E64010055EB16 /* RestaurantCell.m in Sources */,
 				5548194F194C5CEE0055EB16 /* Restaurant.m in Sources */,
 				42FD6C5718DC286B000BF2B9 /* main.m in Sources */,

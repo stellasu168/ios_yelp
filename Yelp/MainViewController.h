@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "YelpClient.h"
 #import "Restaurant.h"
+#import "Filter.h"
 #import "FilterViewController.h"
 #import "RestaurantCell.h"
 

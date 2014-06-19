@@ -46,7 +46,7 @@
                     </items>
                 </navigationBar>
                 <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vz5-CR-BqH">
-                    <rect key="frame" x="46" y="21" width="274" height="44"/>
+                    <rect key="frame" x="52" y="21" width="223" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>

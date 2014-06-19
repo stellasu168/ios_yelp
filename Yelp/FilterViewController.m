@@ -10,9 +10,14 @@
 //  - deals (on/off)
 //  - category
 //
+// 1. Special Deal on/off
+// 2. Distance
+// 3. Sort By
+// 4. Categories
 
 #import "FilterViewController.h"
 #import "Filter.h"
+#import "MainViewController.h"
 
 @interface FilterViewController ()
 
@@ -34,24 +39,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.values = [@[@(NO),@(NO),@(YES),@(YES)] mutableCopy];
-        self.categories = [NSMutableArray arrayWithObjects:
-                        @{
-                             @"name":@"Most Popular",
-                             @"type":@"switches",
-                             @"list":@[@"Open Now",@"Hot & New",@"Offering a Deal",@"Delivery"]
-                             },
-                        @{
-                             @"name":@"Distance",
-                             @"type":@"expandable",
-                             @"list":@[@"Auto",@"2 blocks",@"6 blocks",@"1 mile",@"5 miles"]
-                             },
-                        @{
-                             @"name":@"Sort By",
-                             @"type":@"expandable",
-                             @"list":@[@"Best Match",@"Distance",@"Rating",@"Most Reviewed"]
-                             }
-                           ,nil];
         
     }
     return self;
@@ -63,12 +50,6 @@
     
     self.filterTableView.dataSource = self;
     self.filterTableView.delegate = self;
-    [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"FilterCell"];
-//    UINib *nib = [UINib nibWithNibName:@"SegmentedTableViewCell" bundle:nil];
- //   [self.filterTableView registerNib:nib forCellReuseIdentifier:@"SegmentedCell"];
-    [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SwitchCell"];
-    [self.filterTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ExpandableCell"];
-    
     
     self.distanceCollapsed = YES;
     self.sortByCollapsed = YES;
@@ -83,146 +64,163 @@
     // alloc a Filter object
     // set Filter.userSwitch = YES / NO;
     // then call a function. (  self...addTarget (Selector @ .... )
+
+    return cell;
+}
+*/
+
+
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     
-    if (indexPath.section == 0)
-    {
-        UITableViewCell *cell;
-        cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
-        cell.textLabel.text = self.categories[indexPath.section][@"list"][indexPath.row];
-        UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-       // [switchView setOn:self.values[indexPath.row]];
-        
-        cell.accessoryView = switchView;
-        return cell;
+    if (section == 0) {
+        return @"SPECIAL DEAL";
     }
-    else if (indexPath.section == 1)
-    {
-        UITableViewCell * cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandableCell" forIndexPath:indexPath];
-        if(self.distanceCollapsed) {
-            cell.textLabel.text = self.categories[indexPath.section][@"list"][self.distanceBySelection];
-        }
-        else {
-            cell.textLabel.text = self.categories[indexPath.section][@"list"][indexPath.row];
-            return cell;
-        }
-        return cell;
+    if (section == 1) {
+        return @"DISTANCE";
     }
-    else if (indexPath.section == 2)
-    {
-        
-        UITableViewCell * cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandableCell" forIndexPath:indexPath];
-        if(self.sortByCollapsed) {
-            cell.textLabel.text = self.categories[indexPath.section][@"list"][self.sortBySelection];
-            
-        }
-        else {
-            cell.textLabel.text = self.categories[indexPath.section][@"list"][indexPath.row];
-        }
-        return cell;
+    if (section == 2) {
+        return @"SORT BY";
+    }
+    if (section == 3) {
+        return @"CATEGORIES";
     }
     else {
-        UITableViewCell *cell = [self.filterTableView dequeueReusableCellWithIdentifier:@"FilterCell" forIndexPath:indexPath];
-        return cell;
+        return @"Empty";
     }
-    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 1;
-    }
-    else if (section == 1) {
-        return 4;
-    }
-    else if (section == 2) {
-        if (!self.distanceCollapsed) {
+  
+    if (section == 1)
+    {
+        if (!self.distanceCollapsed)
+        {
             return [self.categories[section][@"list"] count];
         }
-        else {
+        else
+        {
             return 1;
         }
     }
-    else if (section == 3) {
-        if (!self.sortByCollapsed) {
+    else if (section == 2)
+    {
+        if (!self.sortByCollapsed)
+        {
             return [self.categories[section][@"list"] count];
         }
-        else {
+        else
+        {
             return 1;
         }
     }
+    else if (section == 3)
+    {
+        return 7;
+        
+    }
+    
     else {
         return 1;
     }
+
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return self.categories[section][@"name"];
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44;
+    return 45;
 }
 
+/*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.categories.count;
+   
 }
+ */
+
+/*
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    
+    if (indexPath.section == 0) {
+
+    // Deque a cell like 'DEAL'
+        return cell;
+    }
+    
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0)   
+        {
+        cell.textLabel.text = self.distanceArray[0];
+        }
+        return cell;
+    }
+ 
+    if (indexPath.section == 2) {
+        
+        // Deque a cell like SORT
+ 
+        if (indexPath.row == 0) {
+            cell.textLabel.text = self.sortByTitlesArray[0];
+        }
+        
+        if (indexPath.row == 1) {
+            sortCell.textLabel.text = self.sortByTitlesArray[1];
+        }
+        
+        if (indexPath.row == 2) {
+            sortCell.textLabel.text = self.sortByTitlesArray[2];
+        }
+        return cell;
+    }
+    
+    if (indexPath.section == 3) {
+        CategoriesCell *categoriesCell = [tableView dequeueReusableCellWithIdentifier:@"CategoriesCell"];
+        
+        if ([self.selectedCategories[@(indexPath.row)] boolValue]) {
+            categoriesCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        
+        else {
+            categoriesCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        return categoriesCell;
+    }
+    
+    // Error message
+    else { return nil; }
+}
+ 
+*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2)
-    {
-		self.distanceCollapsed = !self.distanceCollapsed;
-        self.distanceBySelection = indexPath.row;
-		[self.filterTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-	}
-    else if(indexPath.section == 3)
-    {
-		self.sortByCollapsed = !self.sortByCollapsed;
-        self.sortBySelection = indexPath.row;
-		[self.filterTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-        
-    }
-    [self.filterTableView deselectRowAtIndexPath:indexPath animated:YES];
+
     
 }
-- (void)didReceiveMemoryWarning
+
+- (IBAction)onCancel:(id)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)onSearch:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    // Do something
+
 }
 
 
-- (void)cancel
-{
-    [self dismissViewControllerAnimated:YES completion:^{}];
-    return;
-}
-
-//- (void)save
-//{
-//    NSMutableDictionary *filters = [[NSMutableDictionary alloc] init];
-//    [filters setValue:[NSNumber numberWithInt:self.sortBySelection] forKey:@"sort"];
-//    if ([self.delegate respondsToSelector:@selector(searchWithDictionary:)])
-//    {
-//        [self.delegate searchWithDictionary:filters];
-//    }
-//    [self dismissViewControllerAnimated:YES completion:^{}];
-//    return;
-//}
-//
-//-(void)searchWithDictionary:(NSMutableDictionary *)data
-//{
-//    if ([self.delegate respondsToSelector:@selector(searchWithDictionary:)])
-//    {
-//        [self.delegate searchWithDictionary:data];
-//    }
-//}
-
-*/
 
 @end
 

@@ -57,12 +57,12 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 }
 - (IBAction)filterTapped:(id)sender
 {
-    NSLog(@"Filter!");
+    NSLog(@"Filter Tapped!");
     
-    NSString *className = NSStringFromClass([FilterViewController class]);
-    FilterViewController *filterViewController = [[FilterViewController alloc] initWithNibName:className bundle:nil];
-    filterViewController.delegate = self;
-    [self presentViewController:filterViewController animated:YES completion:^{}];
+    
+    FilterViewController *filterVC = [[FilterViewController alloc] initWithNibName:@"FilterViewController" bundle:nil];
+    filterVC.delegate = self;
+    [self presentViewController:filterVC animated:YES completion:nil];
     
 }
 
@@ -155,14 +155,13 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
      }];
 
     
-    
 }
 
 
 - (void)searchBarClicked:(UISearchBar *)searchBar
 {
-    self.searchTerm = searchBar.text;
     [searchBar resignFirstResponder];
+    self.searchTerm = searchBar.text;
     [self performSearch];
     
 }

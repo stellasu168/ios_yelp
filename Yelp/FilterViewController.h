@@ -9,12 +9,16 @@
 #import <UIKit/UIKit.h>
 
 
-@protocol FilterViewControllerDelegate <NSObject>
--(void)searchWithDictionary:(NSMutableDictionary *)data;
+@class Filter;
 
-@end
+@protocol FilterViewControllerDelegate;
 
 @interface FilterViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) id <FilterViewControllerDelegate> delegate;
+@property (weak, nonatomic) id <FilterViewControllerDelegate> delegate;
+
+@end
+
+@protocol FilterViewControllerDelegate <NSObject>
+
 @end

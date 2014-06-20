@@ -17,18 +17,28 @@
 
 #import "FilterViewController.h"
 #import "Filter.h"
+#import "SwitchFilterCell.h"
 #import "MainViewController.h"
+#import "ExpandFilterCell.h"ExpandFilterCell.h
 
 @interface FilterViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *filterTableView;
-@property (nonatomic, strong) NSMutableArray *categories;
-@property (nonatomic, strong) NSMutableArray *values;
-@property (nonatomic, assign) BOOL distanceCollapsed;
-@property (nonatomic, assign) BOOL sortByCollapsed;
-@property (nonatomic, assign) NSUInteger distanceBySelection;
-@property (nonatomic, assign) NSUInteger sortBySelection;
 
+@property (strong, nonatomic) Filter *filter;
+@property (strong, nonatomic ) SwitchFilterCell *sfc;
+
+@property (strong, nonatomic) NSMutableDictionary *collapsed;
+@property (strong, nonatomic) NSMutableDictionary *selectedCategories;
+
+@property (nonatomic, assign) BOOL isWithDeal;
+
+@property (strong, nonatomic) NSMutableArray *sortByTitlesArray;
+@property (strong, nonatomic) NSMutableArray *distanceTitlesArray;
+@property (strong, nonatomic) NSMutableArray *categoriesTitlesArray;
+@property (strong, nonatomic) NSMutableArray *categoriesBaseTitelsArray;
+@property (strong, nonatomic) NSMutableDictionary *categoriesDictionary;
+@property (strong, nonatomic) NSMutableArray *userSelectionCategories;
 
 @end
 
@@ -37,8 +47,13 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
+        
         // Custom initialization
+        self.title = @"Filters";
+        self.collapsed = [NSMutableDictionary dictionary];
+        self.selectedCategories = [NSMutableDictionary dictionary];
         
     }
     return self;
@@ -50,29 +65,39 @@
     
     self.filterTableView.dataSource = self;
     self.filterTableView.delegate = self;
+
     
-    self.distanceCollapsed = YES;
-    self.sortByCollapsed = YES;
-    self.sortBySelection = 0;
-    self.distanceBySelection = 0;
-  
+    if (self.filter == nil) {
+        self.filter = [[Filter alloc] init];
+    }
     
-}
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // alloc a Filter object
-    // set Filter.userSwitch = YES / NO;
-    // then call a function. (  self...addTarget (Selector @ .... )
+    
+    if (self.userSelectionCategories == nil) {
+        self.userSelectionCategories = [[NSMutableArray alloc] init];
+    }
+    
+    self.filterTableView.separatorColor = [UIColor clearColor];
+    
+    self.isWithDeal = YES;
+    
+    [self setUpDataArrays];
+    
+    [self.filterTableView registerNib:[UINib nibWithNibName:@"SwitchFilterCell" bundle:nil] forCellReuseIdentifier:@"SwitchFilterCell"];
+    
+    [self.filterTableView registerNib:[UINib nibWithNibName:@"DistanceCell" bundle:nil] forCellReuseIdentifier:@"DistanceCell"];
+    
+    [self.filterTableView registerNib:[UINib nibWithNibName:@"SortCell" bundle:nil] forCellReuseIdentifier:@"SortCell"];
+    
+    [self.filterTableView registerNib:[UINib nibWithNibName:@"CategoriesCell" bundle:nil] forCellReuseIdentifier:@"CategoriesCell"];
+    
+    [self.filterTableView registerNib:[UINib nibWithNibName:@"FirstRowCell" bundle:nil] forCellReuseIdentifier:@"FirstRowCell"];
 
-    return cell;
-}
-*/
+    
+    
+    [self.filterTableView reloadData];
+    
 
-
-- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 4;
+    
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -96,40 +121,43 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  
-    if (section == 1)
-    {
-        if (!self.distanceCollapsed)
-        {
-            return [self.categories[section][@"list"] count];
-        }
-        else
-        {
-            return 1;
-        }
+    
+    if (section == 1) {
+        return [self.collapsed[@(section)] boolValue] ? 5 : 1;
     }
-    else if (section == 2)
-    {
-        if (!self.sortByCollapsed)
-        {
-            return [self.categories[section][@"list"] count];
-        }
-        else
-        {
-            return 1;
-        }
+    
+    if (section == 2) {
+        return [self.collapsed[@(section)] boolValue] ? 4 : 1;
     }
-    else if (section == 3)
-    {
+    
+    if (section == 3) {
         return 7;
-        
     }
     
     else {
         return 1;
     }
-
 }
+
+
+/*
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // alloc a Filter object
+    // set Filter.userSwitch = YES / NO;
+    // then call a function. (  self...addTarget (Selector @ .... )
+
+    return cell;
+}
+*/
+
+
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,62 +173,20 @@
 }
  */
 
-/*
+
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
     
-    if (indexPath.section == 0) {
-
-    // Deque a cell like 'DEAL'
-        return cell;
-    }
+    indexPath.section == 0;
+    SwitchFilterCell *sfc = [self.filterTableView dequeueReusableCellWithIdentifier:@"SwitchFilterCell"];
+    self.sfc = sfc;
+    return sfc;
     
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0)   
-        {
-        cell.textLabel.text = self.distanceArray[0];
-        }
-        return cell;
-    }
- 
-    if (indexPath.section == 2) {
-        
-        // Deque a cell like SORT
- 
-        if (indexPath.row == 0) {
-            cell.textLabel.text = self.sortByTitlesArray[0];
-        }
-        
-        if (indexPath.row == 1) {
-            sortCell.textLabel.text = self.sortByTitlesArray[1];
-        }
-        
-        if (indexPath.row == 2) {
-            sortCell.textLabel.text = self.sortByTitlesArray[2];
-        }
-        return cell;
-    }
     
-    if (indexPath.section == 3) {
-        CategoriesCell *categoriesCell = [tableView dequeueReusableCellWithIdentifier:@"CategoriesCell"];
-        
-        if ([self.selectedCategories[@(indexPath.row)] boolValue]) {
-            categoriesCell.accessoryType = UITableViewCellAccessoryCheckmark;
-        }
-        
-        else {
-            categoriesCell.accessoryType = UITableViewCellAccessoryNone;
-        }
-        
-        return categoriesCell;
-    }
-    
-    // Error message
-    else { return nil; }
 }
- 
-*/
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -220,7 +206,13 @@
 
 }
 
-
+- (void)setUpDataArrays {
+    
+    self.sortByTitlesArray = [NSMutableArray arrayWithObjects:@"Best Match", @"Best Match", @"Distance", @"Highest Rated", nil];
+    self.distanceTitlesArray = [NSMutableArray arrayWithObjects:@"Auto", @"Auto", @"1 Mile Radius", @"2 Miles Radius", @"10 Miles Radius", nil];
+    self.categoriesTitlesArray = [NSMutableArray arrayWithObjects:@"American (New)", @"American (Traditional)", @"Arabian", @"Argentine", @"Armenian", @"Asian Fusion", @"Australian", nil];
+    self.categoriesBaseTitelsArray = [NSMutableArray arrayWithObjects:@"newamerican", @"tradamerican", @"arabian", @"argentine", @"armenian", @"asianfusion", @"australian", nil];
+}
 
 @end
 

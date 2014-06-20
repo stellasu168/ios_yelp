@@ -23,6 +23,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
 @property (weak, nonatomic) NSString *searchTerm;
+@property (strong, nonatomic) FilterViewController *filterVC;
 
 @end
 
@@ -58,11 +59,12 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 - (IBAction)filterTapped:(id)sender
 {
     NSLog(@"Filter Tapped!");
+  
     
-    
-    FilterViewController *filterVC = [[FilterViewController alloc] initWithNibName:@"FilterViewController" bundle:nil];
-    filterVC.delegate = self;
-    [self presentViewController:filterVC animated:YES completion:nil];
+    self.filterVC = [[FilterViewController alloc] initWithNibName:@"FilterViewController" bundle:nil];
+
+    self.filterVC.delegate = self;
+    [self presentViewController: self.filterVC animated:YES completion:nil];
     
 }
 
@@ -135,7 +137,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     
     [self.client searchWithTerm: @"Thai" success:^(AFHTTPRequestOperation *operation, id response)
      {
-         NSLog(@"sample response: %@", response);
+         //NSLog(@"sample response: %@", response);
          
          // response is a NSDictionary object
          NSArray *businesses = response[@"businesses"];
